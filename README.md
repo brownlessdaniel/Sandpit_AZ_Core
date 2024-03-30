@@ -5,9 +5,10 @@ Collection of core networking and security resources
 
 
 - Resource Group
-- vNET - /28
+- Small vNET
   - app subnet  + App Service Delegation
+  - Data subnet
+  - ? Endpoints subnet
 - Route table
 - nsg
-UK South
-  - 
+- 
