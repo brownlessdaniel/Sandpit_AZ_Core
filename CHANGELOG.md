@@ -10,10 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 No unreleased changes know at this stage.
 
 ## [0.0.1] - 2024-03-30
-## Added
-Initial WIP template for network resources
+### Updated
+- network bicep templates
+
+## [0.0.1] - 2024-03-30
+### Added
+- Initial WIP bicep template for network resources
 
 ### Added
-### Changed
+### Updated
 ### Fixed
 

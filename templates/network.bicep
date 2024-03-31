@@ -3,27 +3,39 @@ param location string
 param vnetPrefix string
 param appSubnetName string
 param appSubnetPrefix string
-param appNSGName string
-param appRTName string
-// param dataSubnetName string
-// param dataSubnetPrefix string
-// param dataNSGName string
-// param dataRTName string
+param dataSubnetName string
+param dataSubnetPrefix string
 
 resource appNSG 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
   location: location
-  name: appNSGName
-  tags: {
-    tagName1: 'tagValue1'
-    tagName2: 'tagValue2'
+  name: 'appNSG'
+  tags: {}
+  properties: {
+    securityRules: []
   }
+}
+
+resource dataNSG 'Microsoft.Network/networkSecurityGroups@2023-04-01' = {
+  location: location
+  name: 'dataNSG'
+  tags: {}
   properties: {
     securityRules: []
   }
 }
 
 resource appRT 'Microsoft.Network/routeTables@2023-04-01' = {
-  name: appRTName
+  name: 'appRT'
+  location: location
+  tags: {}
+  properties: {
+    disableBgpRoutePropagation: true
+    routes: []
+  }
+}
+
+resource dataRT 'Microsoft.Network/routeTables@2023-04-01' = {
+  name: 'dataRT'
   location: location
   tags: {}
   properties: {
@@ -51,9 +63,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
             {
               name: 'appServiceDelegation'
               properties: {
-                serviceName: 'string'
+                serviceName: 'Microsoft.Web/serverfarms'
               }
-              type: 'string'
             }
           ]
           networkSecurityGroup: {
@@ -63,6 +74,28 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-04-01' = {
           privateLinkServiceNetworkPolicies: 'string'
           routeTable: {
             id: appRT.id
+          }
+        }
+      }
+      {
+        name: dataSubnetName
+        properties: {
+          addressPrefix: dataSubnetPrefix
+          delegations: [
+            {
+              name: 'azureSQLDelegation'
+              properties: {
+                serviceName: 'Microsoft.SQL/ManagedInstance'
+              }
+            }
+          ]
+          networkSecurityGroup: {
+            id: dataNSG.id
+          }
+          privateEndpointNetworkPolicies: 'string'
+          privateLinkServiceNetworkPolicies: 'string'
+          routeTable: {
+            id: dataRT.id
           }
         }
       }
