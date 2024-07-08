@@ -15,7 +15,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  group: Sandpit-Global
+  - group: Sandpit-Global
 
 stages:
 - stage: Build
@@ -57,12 +57,12 @@ stages:
 
 - stage: Validate
   jobs:
-  - job: vaidateResourceGroup.bicep
+  - job: vaidateResourceGroup_bicep
     displayName: vaidate resourceGroup.bicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        connectedServiceName: $(ServiceConnectionName)
+        connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
@@ -73,13 +73,13 @@ stages:
           -coreRGName $(coreRGName)
           -location $(location)
 
-  - job: vaidateNetwork.bicep
+  - job: vaidate_Network_bicep
     displayName: vaidate network.bicep
-    dependsOn: vaidateResourceGroup.bicep
+    dependsOn: vaidateResourceGroup_bicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        connectedServiceName: $(ServiceConnectionName)
+        connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: 'Resource Group'
@@ -96,19 +96,19 @@ stages:
           -dataSubnetPrefix $(dataSubnetPrefix)
 
 # - Stage: Plan
-#   condition: and(succeeded(), eq({{ parameters.action }}, plan))
+#   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
 
       # Needs to be scriptes as AzureResourceManagerTemplateDeployment tasks don't support what-if
 
 - stage: Apply
-  condition: and(succeeded(), eq({{ parameters.action }}, apply))
+  condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
   jobs:
-  - job: applyResourceGroup.bicep
+  - job: apply_ResourceGroup_bicep
     displayName: vaidate resourceGroup.bicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        connectedServiceName: $(ServiceConnectionName)
+        connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
@@ -119,13 +119,13 @@ stages:
           -coreRGName $(coreRGName)
           -location $(location)
 
-  - job: applyNetwork.bicep
+  - job: apply_Network_bicep
     displayName: vaidate network.bicep
-    dependsOn: applyResourceGroup.bicep
+    dependsOn: apply_ResourceGroup_bicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        connectedServiceName: $(ServiceConnectionName)
+        connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: 'Resource Group'
@@ -141,15 +141,15 @@ stages:
           -dataSubnetName $(dataSubnetName)
           -dataSubnetPrefix $(dataSubnetPrefix)
 
-- stage: Apply
-  condition: and(succeeded(), eq({{ parameters.action }}, apply))
+- stage: Destroy
+  condition: and(succeeded(), eq('${{ parameters.action }}', 'destroy'))
   jobs:
-  - job: applyResourceGroup.bicep
+  - job: destroy_ResourceGroup_bicep
     displayName: vaidate resourceGroup.bicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        connectedServiceName: $(ServiceConnectionName)
+        connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
@@ -160,27 +160,27 @@ stages:
           -coreRGName $(coreRGName)
           -location $(location)
 
-  - job: destroyNetwork.bicep
-    displayName: destroy network.bicep
-    dependsOn: destroyResourceGroup.bicep
-    steps:
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        connectedServiceName: $(ServiceConnectionName)
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
-        location: $(deploymentDefaultLocation)
-        deploymentScope: 'Resource Group'
-        resourceGroupName: $(resourceGroupName)
-        csmFile: resourceGroup.bicep
-        deploymentMode: Incremental
-        overrideParameters: |
-          -vnetName $(vnetName)
-          -location $(location)
-          -vnetPrefix $(vnetPrefix)
-          -appSubnetName $(appSubnetName)
-          -appSubnetPrefix $(appSubnetPrefix)
-          -dataSubnetName $(dataSubnetName)
-          -dataSubnetPrefix $(dataSubnetPrefix)
+  # - job: destroy_Network_bicep
+  #   displayName: destroy network.bicep
+  #   dependsOn: destroy_ResourceGroup_bicep
+  #   steps:
+  #   - task: AzureResourceManagerTemplateDeployment@3
+  #     inputs:
+  #       connectedServiceName: $(serviceconnectionName)
+  #       deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
+  #       location: $(deploymentDefaultLocation)
+  #       deploymentScope: 'Resource Group'
+  #       resourceGroupName: $(resourceGroupName)
+  #       csmFile: resourceGroup.bicep
+  #       deploymentMode: Incremental
+  #       overrideParameters: |
+  #         -vnetName $(vnetName)
+  #         -location $(location)
+  #         -vnetPrefix $(vnetPrefix)
+  #         -appSubnetName $(appSubnetName)
+  #         -appSubnetPrefix $(appSubnetPrefix)
+  #         -dataSubnetName $(dataSubnetName)
+  #         -dataSubnetPrefix $(dataSubnetPrefix)
 
 # - Stage: Destroy
 #   # Powershell script to destroy resource group
