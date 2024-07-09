@@ -48,12 +48,12 @@ stages:
         echo printing bicepparam files...\n
         find . -name "*.bicepparam" -exec sh -c 'echo "##########\nFile: $1\n##########"; cat "$1"' sh {} \;
   
-  - job: publishArtifacts
-    displayName: 'Publish artifacts'
-    dependsOn: replaceTokens
-    steps:
-    - publish: $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)
-      artifact: repo
+  # - job: publishArtifacts
+  #   displayName: 'Publish artifacts'
+  #   dependsOn: replaceTokens
+  #   steps:
+  #   - publish: $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)
+  #     artifact: repo
 
 - stage: Validate
   jobs:
