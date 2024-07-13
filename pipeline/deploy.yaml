@@ -48,18 +48,24 @@ stages:
         echo printing bicepparam files...\n
         find . -name "*.bicepparam" -exec sh -c 'echo "##########\nFile: $1\n##########"; cat "$1"' sh {} \;
   
-  # - job: publishArtifacts
-  #   displayName: 'Publish artifacts'
-  #   dependsOn: replaceTokens
-  #   steps:
-  #   - publish: $(System.DefaultWorkingDirectory)/$(Build.Repository.Name)
-  #     artifact: repo
+  - job: publishArtifacts
+    displayName: publish artifacts
+    dependsOn: replaceTokens
+    steps:
+    - publish: '$(System.DefaultWorkingDirectory)'
+      artifact: '$(Build.DefinitionName)'
 
 - stage: Validate
   jobs:
   - job: validateResourceGroupBicep
     displayName: vaidate resourceGroup.bicep
     steps:
+    - download: current
+      artifact: '$(Build.Repository.Name)'
+    - script: |
+        pwd
+        ls --recursive
+    
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
@@ -77,6 +83,8 @@ stages:
     displayName: vaidate network.bicep
     dependsOn: validateResourceGroupBicep
     steps:
+    - download: current
+      artifact: '$(Build.Repository.Name)'
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
@@ -99,6 +107,8 @@ stages:
     displayName: publish artifacts
     dependsOn: validateNetworkBicep
     steps:
+    - download: current
+      artifact: '$(Build.Repository.Name)'
     - publish: $(System.DefaultWorkingDirectory)
       artifact: validatedBicep
       
