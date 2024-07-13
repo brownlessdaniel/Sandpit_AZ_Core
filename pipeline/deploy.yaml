@@ -57,7 +57,7 @@ stages:
 
 - stage: Validate
   jobs:
-  - job: vaidateResourceGroup_bicep
+  - job: validateResourceGroupBicep
     displayName: vaidate resourceGroup.bicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
@@ -73,9 +73,9 @@ stages:
           -coreRGName $(coreRGName)
           -location $(location)
 
-  - job: vaidate_Network_bicep
+  - job: validateNetworkBicep
     displayName: vaidate network.bicep
-    dependsOn: vaidateResourceGroup_bicep
+    dependsOn: validateResourceGroupBicep
     steps:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
@@ -94,7 +94,14 @@ stages:
           -appSubnetPrefix $(appSubnetPrefix)
           -dataSubnetName $(dataSubnetName)
           -dataSubnetPrefix $(dataSubnetPrefix)
-
+  
+  - job: publishArtifacts
+    displayName: publish artifacts
+    dependsOn: validateNetworkBicep
+    steps:
+    - publish: $(System.DefaultWorkingDirectory)
+      artifact: validatedBicep
+      
 # - Stage: Plan
 #   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
 
@@ -103,9 +110,11 @@ stages:
 - stage: Apply
   condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
   jobs:
-  - job: apply_ResourceGroup_bicep
-    displayName: vaidate resourceGroup.bicep
+  - job: applyResourceGroupBicep
+    displayName: apply resourceGroup.bicep
     steps:
+    - download: current
+      artifact: validatedBicep
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
@@ -119,10 +128,12 @@ stages:
           -coreRGName $(coreRGName)
           -location $(location)
 
-  - job: apply_Network_bicep
-    displayName: vaidate network.bicep
-    dependsOn: apply_ResourceGroup_bicep
+  - job: applyNetworkBicep
+    displayName: apply network.bicep
+    dependsOn: applyResourceGroupBicep
     steps:
+    - download: current
+      artifact: validatedBicep
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
@@ -144,9 +155,11 @@ stages:
 - stage: Destroy
   condition: and(succeeded(), eq('${{ parameters.action }}', 'destroy'))
   jobs:
-  - job: destroy_ResourceGroup_bicep
+  - job: destroyResourceGroupBicep
     displayName: vaidate resourceGroup.bicep
     steps:
+    - download: current
+      artifact: validatedBicep
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
