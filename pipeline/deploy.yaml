@@ -73,7 +73,7 @@ stages:
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
-        csmFile: resourceGroup.bicep
+        csmFile: ./templates/resourceGroup.bicep
         deploymentMode: Validate
         overrideParameters: |
           -coreRGName $(coreRGName)
@@ -92,7 +92,7 @@ stages:
         location: $(deploymentDefaultLocation)
         deploymentScope: 'Resource Group'
         resourceGroupName: $(resourceGroupName)
-        csmFile: resourceGroup.bicep
+        csmFile: ./templates/network.bicep
         deploymentMode: Validate
         overrideParameters: |
           -vnetName $(vnetName)
@@ -132,7 +132,7 @@ stages:
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
-        csmFile: resourceGroup.bicep
+        csmFile: ./templates/resourceGroup.bicep
         deploymentMode: Validate
         overrideParameters: |
           -coreRGName $(coreRGName)
@@ -151,7 +151,7 @@ stages:
         location: $(deploymentDefaultLocation)
         deploymentScope: 'Resource Group'
         resourceGroupName: $(resourceGroupName)
-        csmFile: resourceGroup.bicep
+        csmFile: ./templates/network.bicep
         deploymentMode: Incremental
         overrideParameters: |
           -vnetName $(vnetName)
@@ -177,7 +177,7 @@ stages:
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
-        csmFile: resourceGroup.bicep
+        csmFile: ./templates/resourceGroup.bicep
         deploymentMode: Validate
         overrideParameters: |
           -coreRGName $(coreRGName)
@@ -194,7 +194,7 @@ stages:
   #       location: $(deploymentDefaultLocation)
   #       deploymentScope: 'Resource Group'
   #       resourceGroupName: $(resourceGroupName)
-  #       csmFile: resourceGroup.bicep
+  #       csmFile: ./templates/resourceGroup.bicep
   #       deploymentMode: Incremental
   #       overrideParameters: |
   #         -vnetName $(vnetName)
