@@ -112,8 +112,37 @@ stages:
     - publish: $(System.DefaultWorkingDirectory)
       artifact: validatedBicep
       
-# - Stage: Plan
-#   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
+- Stage: Plan
+  condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
+  jobs:
+  - job: planResourceGroupBicep
+    displayName: plan resourceGroup.bicep
+    steps:
+    - download: current
+      artifact: validatedBicep
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'Deploy resourceGroup.bicep'
+      inputs:
+        connectedServiceName: $(serviceconnectionName)
+        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
+        location: $(deploymentDefaultLocation)
+        deploymentScope: Subscription
+        subscriptionId: $(subscriptionID)
+        csmFile: ./templates/resourceGroup.bicep
+        deploymentMode: Incremental
+        overrideParameters: >
+          -coreRGName '$(coreRGName)'
+          -location '$(location)'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: '$(serviceconnectionName)'
+        scriptType: 'bash'
+        scriptLocation: 'inlinescript'
+        inlineScript: |
+          az deployment sub what-if \
+            --template-file './templates/network.bicep' \
+            --location '$(location)'
+            --parameters 'coreRGName=$(coreRGName) location=$(location)'
 
       # Needs to be scriptes as AzureResourceManagerTemplateDeployment tasks don't support what-if
 
@@ -126,6 +155,7 @@ stages:
     - download: current
       artifact: validatedBicep
     - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'Deploy resourceGroup.bicep'
       inputs:
         connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
@@ -133,7 +163,7 @@ stages:
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
         csmFile: ./templates/resourceGroup.bicep
-        deploymentMode: Validate
+        deploymentMode: Incremental
         overrideParameters: >
           -coreRGName '$(coreRGName)'
           -location '$(location)'
@@ -178,7 +208,7 @@ stages:
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
         csmFile: ./templates/resourceGroup.bicep
-        deploymentMode: Validate
+        deploymentMode: Complete
         overrideParameters: |
           -coreRGName $(coreRGName)
           -location $(location)
