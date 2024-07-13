@@ -61,7 +61,7 @@ stages:
     displayName: vaidate resourceGroup.bicep
     steps:
     - download: current
-      artifact: '$(Build.Repository.Name)'
+      artifact: '$(Build.DefinitionName)'
     - script: |
         pwd
         ls --recursive
@@ -84,7 +84,7 @@ stages:
     dependsOn: validateResourceGroupBicep
     steps:
     - download: current
-      artifact: '$(Build.Repository.Name)'
+      artifact: '$(Build.DefinitionName)'
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
@@ -108,7 +108,7 @@ stages:
     dependsOn: validateNetworkBicep
     steps:
     - download: current
-      artifact: '$(Build.Repository.Name)'
+      artifact: '$(Build.DefinitionName)'
     - publish: $(System.DefaultWorkingDirectory)
       artifact: validatedBicep
       
