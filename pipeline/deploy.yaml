@@ -135,8 +135,8 @@ stages:
         csmFile: ./templates/resourceGroup.bicep
         deploymentMode: Validate
         overrideParameters: |
-          -coreRGName $(coreRGName)
-          -location $(location)
+          -coreRGName '$(coreRGName)'
+          -location '$(location)'
 
   - job: applyNetworkBicep
     displayName: apply network.bicep
