@@ -112,7 +112,7 @@ stages:
     - publish: $(System.DefaultWorkingDirectory)
       artifact: validatedBicep
       
-- Stage: Plan
+- stage: Plan
   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
   jobs:
   - job: planResourceGroupBicep
