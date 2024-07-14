@@ -12,8 +12,6 @@ parameters:
   type: string
 - name: coreRGName
   type: string
-- name: resourceGroupName
-  type: string
 - name: vnetName
   type: string
 - name: vnetPrefix
@@ -32,40 +30,40 @@ jobs:
   displayName: '${{ parameters.deploymentMode }}'
   steps:
   - download: current
-    artifact: '$_(Build.DefinitionName)'
+    artifact: '$(Build.DefinitionName)'
   - script: |
-    pwd
-    ls --recursive
+      pwd
+      ls --recursive
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: '${{ parameters.deploymentMode }} resourceGroup.bicep'
     inputs:
-      connectedServiceName: '{{ parameters.serviceConnectionName }}'
-      location: '{{ parameters.location }}'
+      connectedServiceName: '${{ parameters.serviceConnectionName }}'
+      location: '${{ parameters.location }}'
       deploymentScope: 'Subscription'
-      subscriptionId: ${{ parameters.subscriptionID }}
+      subscriptionId: '${{ parameters.subscriptionID }}'
       csmFile: './templates/resourceGroup.bicep'
-      deploymentMode: ${{ parameters.deploymentMode }}
+      deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >
-        -coreRGName ${{ parameters.coreRGName }}
-        -location ${{ parameters.location }}
+        -coreRGName '${{ parameters.coreRGName }}'
+        -location '${{ parameters.location }}'
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: '${{ parameters.deploymentMode }} network.bicep'
     condition: and(succeeded(), ne('${{ parameters.deploymentMode }}', 'destroy'))
     inputs:
-      connectedServiceName: '{{ parameters.serviceConnectionName }}'
-      location: '{{ parameters.location }}'
+      connectedServiceName: '${{ parameters.serviceConnectionName }}'
+      location: '${{ parameters.location }}'
       deploymentScope: 'Resource Group'
-      resourceGroupName: ${{ parameters.coreRGName }}
-      subscriptionId: ${{ parameters.subscriptionID }}
+      resourceGroupName: '${{ parameters.coreRGName }}'
+      subscriptionId: '${{ parameters.subscriptionID }}'
       csmFile: './templates/network.bicep'
-      deploymentMode: ${{ parameters.deploymentMode }}
+      deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >
-        -vnetName ${{ parameters.vnetName }}
-        -location ${{ parameters.location }}
-        -vnetPrefix ${{ parameters.vnetPrefix }}
-        -appSubnetName ${{ parameters.appSubnetName }}
-        -appSubnetPrefix ${{ parameters.appSubnetPrefix }}
-        -dataSubnetName ${{ parameters.dataSubnetName }}
-        -dataSubnetPrefix ${{ parameters.dataSubnetPrefix }}
+        -vnetName '${{ parameters.vnetName }}'
+        -location '${{ parameters.location }}'
+        -vnetPrefix '${{ parameters.vnetPrefix }}'
+        -appSubnetName '${{ parameters.appSubnetName }}'
+        -appSubnetPrefix '${{ parameters.appSubnetPrefix }}'
+        -dataSubnetName '${{ parameters.dataSubnetName }}'
+        -dataSubnetPrefix '${{ parameters.dataSubnetPrefix }}'

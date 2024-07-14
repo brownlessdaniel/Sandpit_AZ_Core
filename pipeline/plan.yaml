@@ -17,15 +17,15 @@ jobs:
     - task: AzureResourceManagerTemplateDeployment@3
       displayName: 'Deploy resourceGroup.bicep'
       inputs:
-        connectedServiceName: ${{ parameters.serviceConnectionName }}
-        location: ${{ parameters.location }}
+        connectedServiceName: '${{ parameters.serviceConnectionName }}'
+        location: '${{ parameters.location }}'
         deploymentScope: 'Subscription'
         subscriptionId: ${{ parameters.subscriptionID }}
         csmFile: ./templates/resourceGroup.bicep
         deploymentMode: Validate
         overrideParameters: >
           -coreRGName '{{ parameters.coreRGName }}'
-          -location ${{ parameters.location }}
+          -location '${{ parameters.location }}'
     
     - task: AzureCLI@2
       displayName: plan network.bicep # AzureResourceManagerTemplateDeployment@3 task does not support what-if.
@@ -37,5 +37,5 @@ jobs:
           az deployment group what-if \
             --resource-group '{{ parameters.coreRGName }}' \
             --template-file './templates/network.bicep' \
-            --location ${{ parameters.location }}
+            --location '${{ parameters.location }}'
             --parameters 'coreRGName={{ parameters.coreRGName }} location=${{ parameters.location }}'
