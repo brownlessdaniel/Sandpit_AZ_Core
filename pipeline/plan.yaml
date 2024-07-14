@@ -49,5 +49,4 @@ jobs:
         az deployment group what-if \
           --resource-group ${{ parameters.coreRGName }} \
           --template-file '${{ parameters.templatesDir }}/network.bicep' \
-          --location ${{ parameters.location }}
-          --parameters 'coreRGName={{ parameters.coreRGName }} location=${{ parameters.location }}'
+          --parameters 'coreRGName=${{ parameters.coreRGName }} location=${{ parameters.location }}'
