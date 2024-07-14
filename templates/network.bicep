@@ -44,62 +44,62 @@ resource dataRT 'Microsoft.Network/routeTables@2023-04-01' = {
   }
 }
 
-// resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = {
-//   name: vnetName
-//   location: location
-//   tags: {}
-//   properties: {
-//     addressSpace: {
-//       addressPrefixes: [
-//         vnetPrefix
-//       ]
-//     }
-//     subnets: [
-//       {
-//         name: appSubnetName
-//         properties: {
-//           addressPrefix: appSubnetPrefix
-//           delegations: [
-//             {
-//               name: 'appServiceDelegation'
-//               properties: {
-//                 serviceName: 'Microsoft.Web/serverfarms'
-//               }
-//             }
-//           ]
-//           networkSecurityGroup: {
-//             id: appNSG.id
-//           }
-//           privateEndpointNetworkPolicies: 'string'
-//           privateLinkServiceNetworkPolicies: 'string'
-//           routeTable: {
-//             id: appRT.id
-//           }
-//         }
-//       }
-//       {
-//         name: dataSubnetName
-//         properties: {
-//           addressPrefix: dataSubnetPrefix
-//           delegations: [
-//             {
-//               name: 'azureSQLDelegation'
-//               properties: {
-//                 serviceName: 'Microsoft.SQL/ManagedInstance'
-//               }
-//             }
-//           ]
-//           networkSecurityGroup: {
-//             id: dataNSG.id
-//           }
-//           privateEndpointNetworkPolicies: 'string'
-//           privateLinkServiceNetworkPolicies: 'string'
-//           routeTable: {
-//             id: dataRT.id
-//           }
-//         }
-//       }
-//     ]
-//   }
-// }
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = {
+  name: vnetName
+  location: location
+  tags: {}
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        vnetPrefix
+      ]
+    }
+    subnets: [
+      {
+        name: appSubnetName
+        properties: {
+          addressPrefix: appSubnetPrefix
+          delegations: [
+            {
+              name: 'appServiceDelegation'
+              properties: {
+                serviceName: 'Microsoft.Web/serverfarms'
+              }
+            }
+          ]
+          networkSecurityGroup: {
+            id: appNSG.id
+          }
+          privateEndpointNetworkPolicies: 'Enabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
+          routeTable: {
+            id: appRT.id
+          }
+        }
+      }
+      {
+        name: dataSubnetName
+        properties: {
+          addressPrefix: dataSubnetPrefix
+          delegations: [
+            {
+              name: 'azureSQLDelegation'
+              properties: {
+                serviceName: 'Microsoft.SQL/ManagedInstance'
+              }
+            }
+          ]
+          networkSecurityGroup: {
+            id: dataNSG.id
+          }
+          privateEndpointNetworkPolicies: 'Enabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
+          routeTable: {
+            id: dataRT.id
+          }
+        }
+      }
+    ]
+  }
+}
 
