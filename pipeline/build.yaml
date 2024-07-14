@@ -25,6 +25,20 @@ jobs:
         echo printing bicepparam files...\n
         find . -name "*.bicepparam" -exec sh -c 'echo "##########\nFile: $1\n##########"; cat "$1"' sh {} \;
   
+  - task: CmdLine@2
+    displayName: 'generate json parameters file'
+    inputs:
+      script: |
+        for file in $(find . -name "*.bicepparam"); do          
+          PARAMS_JSON=$(grep "=" network.bicepparam | cut -d' ' -f 2,3,4 | sed -e 's/^/"/' \
+            -e 's/ = /": { "value": "/g' \
+            -e 's/$/"}/' \
+            -e '$!s/$/,/' \
+            -e '1i\{"parameters":{' \
+            -e '$a\}}' | jq '. +={ "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#", "contentVersion": "1.0.0.0", }')
+          JSON_FILE_NAME="$(System.DefaultWorkingDirectory)/$(echo $file | cut -d'.' -f2 | cut -d/ -f2).json"
+          echo $PARAMS_JSON | jq > $JSON_FILE_NAME
+
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifacts'
     inputs:
