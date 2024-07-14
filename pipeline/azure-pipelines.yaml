@@ -30,12 +30,6 @@ stages:
       location: $(location)
       subscriptionID: $(subscriptionID)
       coreRGName: $(coreRGName)
-      vnetName: $(vnetName)
-      vnetPrefix: $(vnetPrefix)
-      appSubnetName: $(appSubnetName)
-      appSubnetPrefix: $(appSubnetPrefix)
-      dataSubnetName: $(dataSubnetName)
-      dataSubnetPrefix: $(dataSubnetPrefix)
 
 - stage: Plan
   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
@@ -45,7 +39,8 @@ stages:
       serviceConnectionName: $(serviceconnectionName)
       coreRGName: $(coreRGName)
       location: $(location)
-      subscriptionID: $(subscriptionID)
+      subscriptionID: $(subscriptionID)]
+
 - stage: Apply
   condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
   jobs:
@@ -56,12 +51,6 @@ stages:
       location: $(location)
       subscriptionID: $(subscriptionID)
       coreRGName: $(coreRGName)
-      vnetName: $(vnetName)
-      vnetPrefix: $(vnetPrefix)
-      appSubnetName: $(appSubnetName)
-      appSubnetPrefix: $(appSubnetPrefix)
-      dataSubnetName: $(dataSubnetName)
-      dataSubnetPrefix: $(dataSubnetPrefix)
 
 - stage: Destroy
   condition: and(succeeded(), eq('${{ parameters.action }}', 'destroy'))
@@ -73,9 +62,3 @@ stages:
       location: $(location)
       subscriptionID: $(subscriptionID)
       coreRGName: $(coreRGName)
-      vnetName: $(vnetName)
-      vnetPrefix: $(vnetPrefix)
-      appSubnetName: $(appSubnetName)
-      appSubnetPrefix: $(appSubnetPrefix)
-      dataSubnetName: $(dataSubnetName)
-      dataSubnetPrefix: $(dataSubnetPrefix)

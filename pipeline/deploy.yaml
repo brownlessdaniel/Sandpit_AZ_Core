@@ -10,18 +10,6 @@ parameters:
   type: string
 - name: coreRGName
   type: string
-- name: vnetName
-  type: string
-- name: vnetPrefix
-  type: string
-- name: appSubnetName
-  type: string
-- name: appSubnetPrefix
-  type: string
-- name: dataSubnetName
-  type: string
-- name: dataSubnetPrefix
-  type: string
 - name: templatesDir
   type: string
   default: '$(System.DefaultWorkingDirectory)/$(Build.DefinitionName)/templates'
@@ -74,11 +62,3 @@ jobs:
       csmFile: '${{ parameters.templatesDir }}/network.bicep'
       csmParametersFile: '${{ parameters.templatesDir }}/network.bicepparam'
       deploymentMode: '${{ parameters.deploymentMode }}'
-      # overrideParameters: >
-      #   -vnetName ${{ parameters.vnetName }}
-      #   -location ${{ parameters.location }}
-      #   -vnetPrefix ${{ parameters.vnetPrefix }}
-      #   -appSubnetName ${{ parameters.appSubnetName }}
-      #   -appSubnetPrefix ${{ parameters.appSubnetPrefix }}
-      #   -dataSubnetName ${{ parameters.dataSubnetName }}
-      #   -dataSubnetPrefix ${{ parameters.dataSubnetPrefix }}
