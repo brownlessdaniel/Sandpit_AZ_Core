@@ -26,43 +26,42 @@ stages:
   - template: './deploy.yaml'
     parameters:
       deploymentMode: 'Validate'
-      serviceConnectionName: '$(serviceconnectionName)'
-      location: '$(location)'
-      subscriptionID: '$(subscriptionID)'
-      coreRGName: '$(coreRGName)'
-      vnetName: '$(vnetName)'
-      vnetPrefix: '$(vnetPrefix)'
-      appSubnetName: '$(appSubnetName)'
-      appSubnetPrefix: '$(appSubnetPrefix)'
-      dataSubnetName: '$(dataSubnetName)'
-      dataSubnetPrefix: '$(dataSubnetPrefix)'  
+      serviceConnectionName: $(serviceconnectionName)
+      location: $(location)
+      subscriptionID: $(subscriptionID)
+      coreRGName: $(coreRGName)
+      vnetName: $(vnetName)
+      vnetPrefix: $(vnetPrefix)
+      appSubnetName: $(appSubnetName)
+      appSubnetPrefix: $(appSubnetPrefix)
+      dataSubnetName: $(dataSubnetName)
+      dataSubnetPrefix: $(dataSubnetPrefix)
 
 - stage: Plan
   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
   jobs:
   - template: './plan.yaml'
     parameters:
-      serviceConnectionName: '$(serviceconnectionName)'
-      coreRGName: '$(coreRGName)'
-      location: '$(location)'
-      subscriptionID: '$(subscriptionID)'
-
+      serviceConnectionName: $(serviceconnectionName)
+      coreRGName: $(coreRGName)
+      location: $(location)
+      subscriptionID: $(subscriptionID)
 - stage: Apply
   condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
   jobs:
   - template: './deploy.yaml'
     parameters:
       deploymentMode: 'Incremental'
-      serviceConnectionName: '$(serviceconnectionName)'
-      location: '$(location)'
-      subscriptionID: '$(subscriptionID)'
-      coreRGName: '$(coreRGName)'
-      vnetName: '$(vnetName)'
-      vnetPrefix: '$(vnetPrefix)'
-      appSubnetName: '$(appSubnetName)'
-      appSubnetPrefix: '$(appSubnetPrefix)'
-      dataSubnetName: '$(dataSubnetName)'
-      dataSubnetPrefix: '$(dataSubnetPrefix)'  
+      serviceConnectionName: $(serviceconnectionName)
+      location: $(location)
+      subscriptionID: $(subscriptionID)
+      coreRGName: $(coreRGName)
+      vnetName: $(vnetName)
+      vnetPrefix: $(vnetPrefix)
+      appSubnetName: $(appSubnetName)
+      appSubnetPrefix: $(appSubnetPrefix)
+      dataSubnetName: $(dataSubnetName)
+      dataSubnetPrefix: $(dataSubnetPrefix)
 
 - stage: Destroy
   condition: and(succeeded(), eq('${{ parameters.action }}', 'destroy'))
@@ -70,13 +69,13 @@ stages:
   - template: './deploy.yaml'
     parameters:
       deploymentMode: 'Incremental'
-      serviceConnectionName: '$(serviceconnectionName)'
-      location: '$(location)'
-      subscriptionID: '$(subscriptionID)'
-      coreRGName: '$(coreRGName)'
-      vnetName: '$(vnetName)'
-      vnetPrefix: '$(vnetPrefix)'
-      appSubnetName: '$(appSubnetName)'
-      appSubnetPrefix: '$(appSubnetPrefix)'
-      dataSubnetName: '$(dataSubnetName)'
-      dataSubnetPrefix: '$(dataSubnetPrefix)'  
+      serviceConnectionName: $(serviceconnectionName)
+      location: $(location)
+      subscriptionID: $(subscriptionID)
+      coreRGName: $(coreRGName)
+      vnetName: $(vnetName)
+      vnetPrefix: $(vnetPrefix)
+      appSubnetName: $(appSubnetName)
+      appSubnetPrefix: $(appSubnetPrefix)
+      dataSubnetName: $(dataSubnetName)
+      dataSubnetPrefix: $(dataSubnetPrefix)
