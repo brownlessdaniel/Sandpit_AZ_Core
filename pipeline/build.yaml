@@ -19,7 +19,7 @@ jobs:
       tokenSuffix: '}#'
   
   - task: CmdLine@2
-    displayName: 'Generate timestamp and repository tags'
+    displayName: 'Print params'
     inputs:
       script: |
         echo printing bicepparam files...\n
