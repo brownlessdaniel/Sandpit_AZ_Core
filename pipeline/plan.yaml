@@ -36,8 +36,8 @@ jobs:
       csmFile: ${{ parameters.templatesDir }}/resourceGroup.bicep
       deploymentMode: Validate
       overrideParameters: >
-        -coreRGName '{{ parameters.coreRGName }}'
-        -location '${{ parameters.location }}'
+        -coreRGName {{ parameters.coreRGName }}
+        -location ${{ parameters.location }}
   
   - task: AzureCLI@2
     displayName: plan network.bicep # AzureResourceManagerTemplateDeployment@3 task does not support what-if.
@@ -47,7 +47,7 @@ jobs:
       scriptLocation: 'inlinescript'
       inlineScript: |
         az deployment group what-if \
-          --resource-group '{{ parameters.coreRGName }}' \
+          --resource-group {{ parameters.coreRGName }} \
           --template-file '${{ parameters.templatesDir }}/network.bicep' \
-          --location '${{ parameters.location }}'
+          --location ${{ parameters.location }}
           --parameters 'coreRGName={{ parameters.coreRGName }} location=${{ parameters.location }}'

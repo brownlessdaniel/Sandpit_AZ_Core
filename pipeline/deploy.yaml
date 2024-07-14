@@ -41,7 +41,7 @@ jobs:
     displayName: '${{ parameters.deploymentMode }} resourceGroup.bicep'
     inputs:
       connectedServiceName: '${{ parameters.serviceConnectionName }}'
-      location: '${{ parameters.location }}'
+      location: ${{ parameters.location }}
       deploymentScope: 'Subscription'
       subscriptionId: ${{ parameters.subscriptionID }}
       csmFile: '${{ parameters.templatesDir }}/resourceGroup.bicep'
@@ -55,10 +55,10 @@ jobs:
     condition: and(succeeded(), ne('${{ parameters.deploymentMode }}', 'destroy'))
     inputs:
       connectedServiceName: '${{ parameters.serviceConnectionName }}'
-      location: '${{ parameters.location }}'
+      location: ${{ parameters.location }}
       deploymentScope: 'Resource Group'
-      resourceGroupName: '${{ parameters.coreRGName }}'
-      subscriptionId: '${{ parameters.subscriptionID }}'
+      resourceGroupName: ${{ parameters.coreRGName }}
+      subscriptionId: ${{ parameters.subscriptionID }}
       csmFile: '${{ parameters.templatesDir }}/network.bicep'
       csmParametersFile: '${{ parameters.templatesDir }}/network.bicepparam'
-      deploymentMode: '${{ parameters.deploymentMode }}'
+      deploymentMode: ${{ parameters.deploymentMode }}
