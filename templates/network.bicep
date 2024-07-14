@@ -63,7 +63,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = {
             {
               name: 'appServiceDelegation'
               properties: {
-                serviceName: 'Microsoft.Web/serverfarms'
+                serviceName: 'Microsoft.Web/serverFarms'
               }
             }
           ]
@@ -85,7 +85,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = {
             {
               name: 'azureSQLDelegation'
               properties: {
-                serviceName: 'Microsoft.SQL/ManagedInstance'
+                serviceName: 'Microsoft.SQL/managedInstances'
               }
             }
           ]
