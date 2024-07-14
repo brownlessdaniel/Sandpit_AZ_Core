@@ -43,7 +43,7 @@ jobs:
       connectedServiceName: '${{ parameters.serviceConnectionName }}'
       location: '${{ parameters.location }}'
       deploymentScope: 'Subscription'
-      subscriptionId: '${{ parameters.subscriptionID }}'
+      subscriptionId: ${{ parameters.subscriptionID }}
       csmFile: '${{ parameters.templatesDir }}/resourceGroup.bicep'
       deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >

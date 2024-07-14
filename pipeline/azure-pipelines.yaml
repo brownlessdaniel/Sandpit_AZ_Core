@@ -39,7 +39,7 @@ stages:
       serviceConnectionName: $(serviceconnectionName)
       coreRGName: $(coreRGName)
       location: $(location)
-      subscriptionID: $(subscriptionID)]
+      subscriptionID: $(subscriptionID)
 
 - stage: Apply
   condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
