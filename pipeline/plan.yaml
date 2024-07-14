@@ -11,10 +11,6 @@ parameters:
   type: string
   default: '$(System.DefaultWorkingDirectory)/$(Build.DefinitionName)/templates'
 
-
-variables:
-  - templatesDir: '$(System.DefaultWorkingDirectory)/$(Build.DefinitionName)/templates'
-
 jobs:
 - job: planResourceGroupBicep
   displayName: plan resourceGroup.bicep
