@@ -8,8 +8,6 @@ parameters:
   type: string
 - name: subscriptionID
   type: string
-- name: bicepFile
-  type: string
 - name: coreRGName
   type: string
 - name: vnetName
@@ -24,6 +22,10 @@ parameters:
   type: string
 - name: dataSubnetPrefix
   type: string
+- name: templatesDir
+  type: string
+  default: '$(System.DefaultWorkingDirectory)/$(Build.DefinitionName)/templates'
+
 
 jobs:
 - job: '${{ parameters.deploymentMode }}'
@@ -33,8 +35,12 @@ jobs:
   - download: current
     artifact: '$(Build.DefinitionName)'
   - script: |
-      pwd
-      ls --recursive
+      echo "===="
+      echo "moving artifact from $(Pipeline.Workspace)/$(Build.DefinitionName) to $(DefaultWorkingDirectory)/$(Build.DefinitionName)"
+      mv '$(Pipeline.Workspace)/$(Build.DefinitionName)' '$(System.DefaultWorkingDirectory)/$(Build.DefinitionName)'
+      ls $(System.DefaultWorkingDirectory)
+      echo "done"
+      echo "===="
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: '${{ parameters.deploymentMode }} resourceGroup.bicep'
@@ -43,7 +49,7 @@ jobs:
       location: '${{ parameters.location }}'
       deploymentScope: 'Subscription'
       subscriptionId: '${{ parameters.subscriptionID }}'
-      csmFile: './templates/resourceGroup.bicep'
+      csmFile: '${{ parameters.templatesDir }}/resourceGroup.bicep'
       deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >
         -coreRGName '${{ parameters.coreRGName }}'
@@ -58,7 +64,7 @@ jobs:
       deploymentScope: 'Resource Group'
       resourceGroupName: '${{ parameters.coreRGName }}'
       subscriptionId: '${{ parameters.subscriptionID }}'
-      csmFile: './templates/network.bicep'
+      csmFile: '${{ parameters.templatesDir }}/network.bicep'
       deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >
         -vnetName '${{ parameters.vnetName }}'
