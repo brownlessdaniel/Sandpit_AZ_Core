@@ -68,13 +68,13 @@ stages:
     
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        connectedServiceName: $(serviceconnectionName)
+        connectedServiceName: '$(serviceconnectionName)'
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
-        location: $(deploymentDefaultLocation)
-        deploymentScope: Subscription
-        subscriptionId: $(subscriptionID)
-        csmFile: ./templates/resourceGroup.bicep
-        deploymentMode: Validate
+        location: '$(location)'
+        deploymentScope: 'Subscription'
+        subscriptionId: '$(subscriptionID)'
+        csmFile: './templates/resourceGroup.bicep'
+        deploymentMode: 'Validate'
         overrideParameters: >
           -coreRGName $(coreRGName)
           -location $(location)
@@ -125,8 +125,8 @@ stages:
       inputs:
         connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
-        location: $(deploymentDefaultLocation)
-        deploymentScope: Subscription
+        location: '$(location)'
+        deploymentScope: 'Subscription'
         subscriptionId: $(subscriptionID)
         csmFile: ./templates/resourceGroup.bicep
         deploymentMode: Incremental
@@ -159,7 +159,7 @@ stages:
       inputs:
         connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
-        location: $(deploymentDefaultLocation)
+        location: '$(location)'
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
         csmFile: ./templates/resourceGroup.bicep
