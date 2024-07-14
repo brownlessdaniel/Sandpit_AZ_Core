@@ -72,12 +72,13 @@ jobs:
       resourceGroupName: '${{ parameters.coreRGName }}'
       subscriptionId: '${{ parameters.subscriptionID }}'
       csmFile: '${{ parameters.templatesDir }}/network.bicep'
+      csmParametersFile: '${{ parameters.templatesDir }}/network.bicepparam'
       deploymentMode: '${{ parameters.deploymentMode }}'
-      overrideParameters: >
-        -vnetName ${{ parameters.vnetName }}
-        -location ${{ parameters.location }}
-        -vnetPrefix ${{ parameters.vnetPrefix }}
-        -appSubnetName ${{ parameters.appSubnetName }}
-        -appSubnetPrefix ${{ parameters.appSubnetPrefix }}
-        -dataSubnetName ${{ parameters.dataSubnetName }}
-        -dataSubnetPrefix ${{ parameters.dataSubnetPrefix }}
+      # overrideParameters: >
+      #   -vnetName ${{ parameters.vnetName }}
+      #   -location ${{ parameters.location }}
+      #   -vnetPrefix ${{ parameters.vnetPrefix }}
+      #   -appSubnetName ${{ parameters.appSubnetName }}
+      #   -appSubnetPrefix ${{ parameters.appSubnetPrefix }}
+      #   -dataSubnetName ${{ parameters.dataSubnetName }}
+      #   -dataSubnetPrefix ${{ parameters.dataSubnetPrefix }}
