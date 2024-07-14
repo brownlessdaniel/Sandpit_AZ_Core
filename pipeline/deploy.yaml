@@ -51,8 +51,8 @@ jobs:
       csmFile: '${{ parameters.templatesDir }}/resourceGroup.bicep'
       deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >
-        -coreRGName '${{ parameters.coreRGName }}'
-        -location '${{ parameters.location }}'
+        -coreRGName ${{ parameters.coreRGName }}
+        -location ${{ parameters.location }}
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: '${{ parameters.deploymentMode }} network.bicep'
@@ -66,10 +66,10 @@ jobs:
       csmFile: '${{ parameters.templatesDir }}/network.bicep'
       deploymentMode: '${{ parameters.deploymentMode }}'
       overrideParameters: >
-        -vnetName '${{ parameters.vnetName }}'
-        -location '${{ parameters.location }}'
-        -vnetPrefix '${{ parameters.vnetPrefix }}'
-        -appSubnetName '${{ parameters.appSubnetName }}'
-        -appSubnetPrefix '${{ parameters.appSubnetPrefix }}'
-        -dataSubnetName '${{ parameters.dataSubnetName }}'
-        -dataSubnetPrefix '${{ parameters.dataSubnetPrefix }}'
+        -vnetName ${{ parameters.vnetName }}
+        -location ${{ parameters.location }}
+        -vnetPrefix ${{ parameters.vnetPrefix }}
+        -appSubnetName ${{ parameters.appSubnetName }}
+        -appSubnetPrefix ${{ parameters.appSubnetPrefix }}
+        -dataSubnetName ${{ parameters.dataSubnetName }}
+        -dataSubnetPrefix ${{ parameters.dataSubnetPrefix }}
