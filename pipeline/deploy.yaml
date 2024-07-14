@@ -69,7 +69,6 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: '$(serviceconnectionName)'
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: '$(location)'
         deploymentScope: 'Subscription'
         subscriptionId: '$(subscriptionID)'
@@ -88,7 +87,6 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: 'Resource Group'
         resourceGroupName: $(resourceGroupName)
@@ -124,7 +122,6 @@ stages:
       displayName: 'Deploy resourceGroup.bicep'
       inputs:
         connectedServiceName: $(serviceconnectionName)
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: '$(location)'
         deploymentScope: 'Subscription'
         subscriptionId: $(subscriptionID)
@@ -158,7 +155,6 @@ stages:
       displayName: 'Deploy resourceGroup.bicep'
       inputs:
         connectedServiceName: $(serviceconnectionName)
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: '$(location)'
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
@@ -177,7 +173,6 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: 'Resource Group'
         resourceGroupName: $(resourceGroupName)
@@ -203,7 +198,6 @@ stages:
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
         connectedServiceName: $(serviceconnectionName)
-        deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
         subscriptionId: $(subscriptionID)
@@ -220,7 +214,6 @@ stages:
   #   - task: AzureResourceManagerTemplateDeployment@3
   #     inputs:
   #       connectedServiceName: $(serviceconnectionName)
-  #       deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
   #       location: $(deploymentDefaultLocation)
   #       deploymentScope: 'Resource Group'
   #       resourceGroupName: $(resourceGroupName)
