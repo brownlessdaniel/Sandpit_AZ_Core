@@ -1,0 +1,41 @@
+parameters:
+- name: serviceConnectionName
+  type: string
+- name: coreRGName
+  type: string
+- name: location
+  type: string
+- name: subscriptionID
+  type: string
+
+jobs:
+  - job: planResourceGroupBicep
+    displayName: plan resourceGroup.bicep
+    steps:
+    - download: current
+      artifact: '$(Build.DefinitionName)'
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'Deploy resourceGroup.bicep'
+      inputs:
+        connectedServiceName: ${{ parameters.serviceConnectionName }}
+        location: ${{ parameters.location }}
+        deploymentScope: 'Subscription'
+        subscriptionId: ${{ parameters.subscriptionID }}
+        csmFile: ./templates/resourceGroup.bicep
+        deploymentMode: Validate
+        overrideParameters: >
+          -coreRGName '{{ parameters.coreRGName }}'
+          -location ${{ parameters.location }}
+    
+    - task: AzureCLI@2
+      displayName: plan network.bicep # AzureResourceManagerTemplateDeployment@3 task does not support what-if.
+      inputs:
+        azureSubscription: '${{ parameters.serviceConnectionName }}'
+        scriptType: 'bash'
+        scriptLocation: 'inlinescript'
+        inlineScript: |
+          az deployment group what-if \
+            --resource-group '{{ parameters.coreRGName }}' \
+            --template-file './templates/network.bicep' \
+            --location ${{ parameters.location }}
+            --parameters 'coreRGName={{ parameters.coreRGName }} location=${{ parameters.location }}'
