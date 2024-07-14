@@ -35,9 +35,10 @@ jobs:
             -e 's/$/"}/' \
             -e '$!s/$/,/' \
             -e '1i\{"parameters":{' \
-            -e '$a\}}' | jq '. +={ "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#", "contentVersion": "1.0.0.0", }')
-          JSON_FILE_NAME="$(System.DefaultWorkingDirectory)/$(echo $file | cut -d'.' -f2 | cut -d/ -f2).json"
-          echo $PARAMS_JSON | jq > $JSON_FILE_NAME
+            -e '$a\}}' | jq '. +={ "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#", "contentVersion": "1.0.0.0", }');
+          JSON_FILE_NAME="$(System.DefaultWorkingDirectory)/$(echo $file | cut -d'.' -f2 | cut -d/ -f2).json";
+          echo $PARAMS_JSON | jq > $JSON_FILE_NAME;
+        done
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifacts'
