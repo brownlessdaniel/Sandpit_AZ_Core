@@ -1,5 +1,5 @@
-param location string = 'uk-south'
-param coreRGName string = ''
+param location string
+param coreRGName string
 
 targetScope = 'subscription'
 
