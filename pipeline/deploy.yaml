@@ -29,6 +29,7 @@ jobs:
 - job: '${{ parameters.deploymentMode }}'
   displayName: '${{ parameters.deploymentMode }}'
   steps:
+  - checkout: none
   - download: current
     artifact: '$(Build.DefinitionName)'
   - script: |
