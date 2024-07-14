@@ -68,8 +68,7 @@ stages:
     
     - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        # connectedServiceName: $(serviceconnectionName)
-        connectedServiceName: 'Pay-As-You-Go'
+        connectedServiceName: $(serviceconnectionName)
         deploymentName: '$(Build.Repository.Name)_$(Build.BuildNumber)'
         location: $(deploymentDefaultLocation)
         deploymentScope: Subscription
