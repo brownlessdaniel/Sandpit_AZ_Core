@@ -33,6 +33,7 @@ stages:
 
 - stage: Plan
   condition: and(succeeded(), eq('${{ parameters.action }}', 'plan'))
+  dependsOn: Validate
   jobs:
   - template: './plan.yaml'
     parameters:
@@ -43,6 +44,7 @@ stages:
 
 - stage: Apply
   condition: and(succeeded(), eq('${{ parameters.action }}', 'apply'))
+  dependsOn: Validate
   jobs:
   - template: './deploy.yaml'
     parameters:
@@ -54,6 +56,7 @@ stages:
 
 - stage: Destroy
   condition: and(succeeded(), eq('${{ parameters.action }}', 'destroy'))
+  dependsOn: Validate
   jobs:
   - template: './deploy.yaml'
     parameters:
